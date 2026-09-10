@@ -630,7 +630,7 @@
                 <span class="live-dot"></span>
                 <span id="section-label">All Active App</span>
             </div>
-            <span id="active-count" style="color: var(--neon-cyan);">2 Available</span>
+            <span id="active-count" style="color: var(--neon-cyan);">3 Available</span>
         </div>
 
         <!-- TAB 1: ACTIVE APPS -->
@@ -659,6 +659,19 @@
                 <div class="app-actions">
                     <button class="fav-btn" onclick="toggleFavorite(this, 'Vidyagram Server 2')"><i class="fa-solid fa-heart"></i></button>
                     <a href="https://spidystudvgg.vercel.app" class="open-btn" target="_blank">Open</a>
+                </div>
+            </div>
+            <div class="app-card" data-name="vidyagram server 3">
+                <div class="app-info">
+                    <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="app-icon" alt="Vidyagram Server 3">
+                    <div class="app-details">
+                        <span class="app-name">Vidyagram Server 3</span>
+                        <span class="app-tag">Server Active</span>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Vidyagram Server 3')"><i class="fa-solid fa-heart"></i></button>
+                    <a href="https://bat.vidyagram.workers.dev/" class="open-btn" target="_blank">Open</a>
                 </div>
             </div>
         </div>
@@ -815,7 +828,7 @@
             if (tabName === 'active') {
                 document.getElementById('tab-active').classList.add('active-tab');
                 label.innerText = "All Active App";
-                countLabel.innerText = "2 Available";
+                countLabel.innerText = "3 Available";
             } else if (tabName === 'upcoming') {
                 document.getElementById('tab-upcoming').classList.add('active-tab');
                 label.innerText = "All Upcoming Server";
