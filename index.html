@@ -630,22 +630,36 @@
                 <span class="live-dot"></span>
                 <span id="section-label">All Active App</span>
             </div>
-            <span id="active-count" style="color: var(--neon-cyan);">1 Available</span>
+            <span id="active-count" style="color: var(--neon-cyan);">2 Available</span>
         </div>
 
         <!-- TAB 1: ACTIVE APPS -->
         <div class="app-list tab-content active-tab" id="tab-active">
-            <div class="app-card" data-name="vidyagram">
+            <div class="app-card" data-name="vidyagram 1">
                 <div class="app-info">
-                    <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="app-icon" alt="Vidyagram">
+                    <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="app-icon" alt="Vidyagram 1">
                     <div class="app-details">
-                        <span class="app-name">Vidyagram</span>
+                        <span class="app-name">Vidyagram 1</span>
                         <span class="app-tag">Server Active</span>
                     </div>
                 </div>
                 <div class="app-actions">
-                    <button class="fav-btn" onclick="toggleFavorite(this, 'Vidyagram')"><i class="fa-solid fa-heart"></i></button>
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Vidyagram 1')"><i class="fa-solid fa-heart"></i></button>
                     <a href="https://vidya.studybeepro.site/" class="open-btn" target="_blank">Open</a>
+                </div>
+            </div>
+
+            <div class="app-card" data-name="vidyagram 2">
+                <div class="app-info">
+                    <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="app-icon" alt="Vidyagram 2">
+                    <div class="app-details">
+                        <span class="app-name">Vidyagram 2</span>
+                        <span class="app-tag">Server Active</span>
+                    </div>
+                </div>
+                <div class="app-actions">
+                    <button class="fav-btn" onclick="toggleFavorite(this, 'Vidyagram 2')"><i class="fa-solid fa-heart"></i></button>
+                    <a href="https://studyvidyagram.vercel.app/" class="open-btn" target="_blank">Open</a>
                 </div>
             </div>
         </div>
@@ -800,7 +814,7 @@
             if (tabName === 'active') {
                 document.getElementById('tab-active').classList.add('active-tab');
                 label.innerText = "All Active App";
-                countLabel.innerText = "1 Available";
+                countLabel.innerText = "2 Available";
             } else if (tabName === 'upcoming') {
                 document.getElementById('tab-upcoming').classList.add('active-tab');
                 label.innerText = "All Upcoming Server";
