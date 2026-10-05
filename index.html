@@ -1302,7 +1302,7 @@
 
 
         /* =========================================
-           24 HOURS SESSION (FIXED)
+           24 HOURS SESSION (BULLETPROOF FIXED)
         ========================================== */
 
         (function() {
@@ -1324,27 +1324,28 @@
                 );
 
 
+            // Agar sessionStorage ya valid localStorage timestamp maujood hai toh auth hide rakho
             if (
-                (expiryTime &&
-                new Date().getTime() <
-                parseInt(expiryTime)) ||
-                sessionActive === "true"
+                sessionActive === "true" ||
+                (expiryTime && new Date().getTime() < parseInt(expiryTime))
             ) {
 
                 if (authScreen) {
+                    authScreen.style.display = 'none';
+                }
 
-                    authScreen.style.display =
-                        'none';
-
+                // Agar pehle se verified hai toh agar URL me ?key= wagera aaya ho toh usko clean kar do taaki conflict na ho
+                if (window.location.search.includes('key=')) {
+                    if (window.history.replaceState) {
+                        const cleanUrl = window.location.origin + window.location.pathname;
+                        window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+                    }
                 }
 
             } else {
 
                 if (authScreen) {
-
-                    authScreen.style.display =
-                        'flex';
-
+                    authScreen.style.display = 'flex';
                 }
 
             }
@@ -1586,7 +1587,8 @@
                     expiryTimestamp
                 );
 
-                // Session flag save kar liya taaki back karne par code/verification screen na dikhe
+
+                // Set both session flags securely
                 sessionStorage.setItem(
                     "portal_verified",
                     "true"
