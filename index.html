@@ -50,7 +50,7 @@
 
         /* =========================================
            SPLASH SCREEN
-        ========================================= */
+        ========================================== */
 
         #splash-screen {
             position: fixed;
@@ -97,7 +97,7 @@
 
         /* =========================================
            AUTHENTICATION
-        ========================================= */
+        ========================================== */
 
         #authScreen {
             position: fixed;
@@ -191,7 +191,7 @@
 
         /* =========================================
            MAIN CONTAINER
-        ========================================= */
+        ========================================== */
 
         .app-container {
             width: 100%;
@@ -384,7 +384,7 @@
 
         /* =========================================
            COMMUNITY MODAL
-        ========================================= */
+        ========================================== */
 
         #popupModal {
             position: fixed;
@@ -487,25 +487,26 @@
 
 <body>
 
-    <!-- =========================================
-         SPLASH SCREEN
-    ========================================== -->
+    <!-- SPLASH SCREEN -->
 
     <div id="splash-screen">
+
         <div class="splash-avatar">
+
             <img
                 src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png"
                 alt="Logo"
             >
+
         </div>
+
     </div>
 
 
-    <!-- =========================================
-         DEVICE VERIFICATION
-    ========================================== -->
+    <!-- DEVICE VERIFICATION -->
 
     <div id="authScreen" style="display: none;">
+
         <div class="card">
 
             <h2>Device Verification</h2>
@@ -522,24 +523,27 @@
             >
 
             <button class="btn btn-get" onclick="openAroLinks()">
+
                 <i class="fa-solid fa-key"></i>
                 Get Key
+
             </button>
 
             <button class="btn btn-verify" onclick="verifyUserKey()">
+
                 <i class="fa-solid fa-unlock"></i>
                 Verify & Open Portal
+
             </button>
 
             <div id="status-msg"></div>
 
         </div>
+
     </div>
 
 
-    <!-- =========================================
-         COMMUNITY MODAL
-    ========================================== -->
+    <!-- COMMUNITY MODAL -->
 
     <div id="popupModal">
 
@@ -589,12 +593,11 @@
             </div>
 
         </div>
+
     </div>
 
 
-    <!-- =========================================
-         MAIN APP
-    ========================================== -->
+    <!-- MAIN APP -->
 
     <div class="app-container">
 
@@ -634,13 +637,59 @@
                 id="active-count"
                 style="color: var(--neon-cyan);"
             >
-                4 Available
+                5 Available
             </span>
 
         </div>
 
 
         <div class="app-list" id="tab-active">
+
+
+            <!-- =====================================
+                 KGS — FIRST APP
+            ====================================== -->
+
+            <div
+                class="app-card"
+                data-name="kgs"
+            >
+
+                <div class="app-info">
+
+                    <img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCiwfy76ica73byqKIURXqN2Zi2h2Sdw0VJooGkXsyg&s"
+                        class="app-icon"
+                        alt="KGS"
+                    >
+
+                    <div class="app-details">
+
+                        <span class="app-name">
+                            KGS
+                        </span>
+
+                        <span class="app-tag">
+                            Server Active
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="app-actions">
+
+                    <a
+                        href="https://www.study-mate.in/batches"
+                        class="open-btn"
+                        target="_blank"
+                    >
+                        Open
+                    </a>
+
+                </div>
+
+            </div>
 
 
             <!-- Sachin Academy -->
@@ -823,24 +872,12 @@
     </div>
 
 
-    <!-- =========================================
-         JAVASCRIPT
-    ========================================== -->
+    <!-- JAVASCRIPT -->
 
     <script>
 
-
         /* =========================================
            AUTHENTICATION CHECK
-
-           IMPORTANT FIX:
-           pageshow handles browser Back button
-           and BFCache restore.
-
-           visibilitychange handles returning to
-           the page after closing/reopening app/tab.
-
-           EXISTING KEY SYSTEM IS NOT CHANGED.
         ========================================== */
 
         function checkAuthStatus() {
@@ -857,11 +894,6 @@
 
             const now = Date.now();
 
-
-            /*
-             * 24-hour verification is still active
-             */
-
             if (
                 expiryTime &&
                 now < parseInt(expiryTime, 10)
@@ -870,11 +902,6 @@
                 authScreen.style.display = "none";
 
             }
-
-
-            /*
-             * Verification expired
-             */
 
             else {
 
@@ -885,9 +912,7 @@
         }
 
 
-        /* =========================================
-           INITIAL CHECK
-        ========================================== */
+        /* INITIAL CHECK */
 
         document.addEventListener(
             "DOMContentLoaded",
@@ -899,11 +924,7 @@
         );
 
 
-        /* =========================================
-           BACK BUTTON / BFCache FIX
-
-           This is the MAIN fix for your problem.
-        ========================================== */
+        /* BACK BUTTON / BFCache FIX */
 
         window.addEventListener(
             "pageshow",
@@ -915,9 +936,7 @@
         );
 
 
-        /* =========================================
-           PAGE BECOMES ACTIVE AGAIN
-        ========================================== */
+        /* PAGE BECOMES ACTIVE AGAIN */
 
         document.addEventListener(
             "visibilitychange",
@@ -935,8 +954,6 @@
 
         /* =========================================
            GENERATE SECRET KEY
-
-           SAME AS YOUR ORIGINAL CODE
         ========================================== */
 
         function generateSecretKey() {
@@ -963,8 +980,6 @@
 
         /* =========================================
            AROLINKS
-
-           SAME SYSTEM
         ========================================== */
 
         function openAroLinks() {
@@ -975,36 +990,26 @@
             const freshKey =
                 generateSecretKey();
 
-
-            /*
-             * Save generated key
-             */
-
             localStorage.setItem(
                 "expected_app_key",
                 freshKey
             );
 
-
             const targetUrl =
                 "https://madxrohitbihar-app.github.io/VIDYAGRAM-KYE/?key=" +
                 encodeURIComponent(freshKey);
 
-
             const apiUrl =
                 `https://arolinks.com/api?api=${apiToken}&url=${encodeURIComponent(targetUrl)}`;
 
-
             const msgDiv =
                 document.getElementById("status-msg");
-
 
             msgDiv.style.color =
                 "#00f2fe";
 
             msgDiv.innerText =
                 "Generating Token...";
-
 
             fetch(apiUrl)
 
@@ -1053,12 +1058,6 @@
 
         /* =========================================
            VERIFY USER KEY
-
-           YOUR ORIGINAL SYSTEM KEPT:
-           - Format check
-           - Used key check
-           - Expected key OR valid pattern
-           - 24-hour expiry
         ========================================== */
 
         function verifyUserKey() {
@@ -1070,12 +1069,10 @@
                     .trim()
                     .toUpperCase();
 
-
             const expectedKey =
                 localStorage.getItem(
                     "expected_app_key"
                 );
-
 
             const usedKeys =
                 JSON.parse(
@@ -1084,16 +1081,11 @@
                     ) || "[]"
                 );
 
-
             const msgDiv =
                 document.getElementById(
                     "status-msg"
                 );
 
-
-            /* -----------------------------
-               EMPTY KEY
-            ----------------------------- */
 
             if (!userKey) {
 
@@ -1107,10 +1099,6 @@
 
             }
 
-
-            /* -----------------------------
-               KEY FORMAT
-            ----------------------------- */
 
             const patternValid =
                 userKey.startsWith("MAD") &&
@@ -1131,10 +1119,6 @@
             }
 
 
-            /* -----------------------------
-               SAME USED-KEY SYSTEM
-            ----------------------------- */
-
             if (usedKeys.includes(userKey)) {
 
                 msgDiv.style.color =
@@ -1148,14 +1132,6 @@
             }
 
 
-            /* -----------------------------
-               YOUR ORIGINAL LOGIC
-               KEPT EXACTLY
-
-               We are NOT forcing exact
-               expectedKey matching.
-            ----------------------------- */
-
             if (
                 (expectedKey &&
                  userKey === expectedKey) ||
@@ -1164,25 +1140,18 @@
 
                 usedKeys.push(userKey);
 
-
                 localStorage.setItem(
                     "used_app_keys",
                     JSON.stringify(usedKeys)
                 );
 
 
-                /* -----------------------------
-                   24 HOURS ACCESS
-                ----------------------------- */
-
                 const twentyFourHours =
                     24 * 60 * 60 * 1000;
-
 
                 const expiryTimestamp =
                     Date.now() +
                     twentyFourHours;
-
 
                 localStorage.setItem(
                     "app_expiry_time",
@@ -1190,26 +1159,14 @@
                 );
 
 
-                /* -----------------------------
-                   HIDE AUTH SCREEN
-                ----------------------------- */
-
                 const authScreen =
                     document.getElementById(
                         "authScreen"
                     );
 
-
                 authScreen.style.display =
                     "none";
 
-
-                /* -----------------------------
-                   CLEAN URL
-
-                   Key will disappear from
-                   address bar.
-                ----------------------------- */
 
                 if (
                     window.history &&
@@ -1219,7 +1176,6 @@
                     const cleanUrl =
                         window.location.origin +
                         window.location.pathname;
-
 
                     window.history.replaceState(
                         {
@@ -1232,7 +1188,6 @@
                 }
 
             }
-
 
             else {
 
@@ -1259,7 +1214,6 @@
                     .value
                     .toLowerCase();
 
-
             document
                 .querySelectorAll(
                     "#tab-active .app-card"
@@ -1270,7 +1224,6 @@
                         card.getAttribute(
                             "data-name"
                         );
-
 
                     card.style.display =
                         (
@@ -1299,9 +1252,7 @@
                     );
 
 
-                /* -----------------------------
-                   SPLASH
-                ----------------------------- */
+                /* SPLASH */
 
                 if (
                     !sessionStorage.getItem(
@@ -1315,7 +1266,6 @@
                             splash.classList.add(
                                 "hide-splash"
                             );
-
 
                             sessionStorage.setItem(
                                 "splashShown",
@@ -1336,26 +1286,21 @@
                 }
 
 
-                /* -----------------------------
-                   URL KEY
-                ----------------------------- */
+                /* URL KEY */
 
                 const urlParams =
                     new URLSearchParams(
                         window.location.search
                     );
 
-
                 const urlKey =
                     urlParams.get("key");
-
 
                 if (urlKey) {
 
                     document.getElementById(
                         "accessKeyInput"
                     ).value = urlKey;
-
 
                     localStorage.setItem(
                         "expected_app_key",
@@ -1365,9 +1310,7 @@
                 }
 
 
-                /* -----------------------------
-                   COMMUNITY POPUP
-                ----------------------------- */
+                /* COMMUNITY POPUP */
 
                 if (
                     !sessionStorage.getItem(
@@ -1390,10 +1333,7 @@
                 }
 
 
-                /*
-                 * Final auth check after DOM
-                 * is completely ready.
-                 */
+                /* FINAL AUTH CHECK */
 
                 checkAuthStatus();
 
@@ -1411,7 +1351,6 @@
                 "popupModal"
             ).style.display =
                 "none";
-
 
             sessionStorage.setItem(
                 "popupShown",
