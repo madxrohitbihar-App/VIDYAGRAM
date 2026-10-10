@@ -20,6 +20,7 @@
             --neon-blue: #4facfe;
             --neon-pink: #ff007f;
             --neon-green: #00ff66;
+            --accent-gold: #ffd700;
             --gradient-cyber: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
             --gradient-btn: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
             --shadow-neon: 0 0 20px rgba(0, 242, 254, 0.25);
@@ -190,7 +191,7 @@
         }
 
         /* =========================================
-           MAIN CONTAINER
+           MAIN CONTAINER & LAYOUT
         ========================================== */
 
         .app-container {
@@ -200,7 +201,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-bottom: 40px;
+            padding-bottom: 90px;
         }
 
         .brand-header {
@@ -212,7 +213,6 @@
             position: sticky;
             top: 0;
             z-index: 101;
-            min-height: 1px;
         }
 
         .header-search {
@@ -282,7 +282,6 @@
                 opacity: 1;
                 transform: scale(1);
             }
-
             50% {
                 opacity: 0.4;
                 transform: scale(0.8);
@@ -294,6 +293,10 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        .hidden {
+            display: none !important;
         }
 
         .app-card {
@@ -358,9 +361,29 @@
         .app-actions {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             flex-shrink: 0;
             margin-left: 8px;
+        }
+
+        .fav-btn {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-neon);
+            color: var(--text-secondary);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fav-btn.active {
+            color: var(--neon-pink);
+            border-color: var(--neon-pink);
+            background: rgba(255, 0, 127, 0.1);
         }
 
         .open-btn {
@@ -382,8 +405,60 @@
             box-shadow: var(--shadow-neon);
         }
 
+        .no-data {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 30px;
+        }
+
         /* =========================================
-           COMMUNITY MODAL
+           BOTTOM NAVIGATION BAR
+        ========================================== */
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background: rgba(5, 5, 10, 0.92);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid var(--border-neon);
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 6px 16px;
+            border-radius: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+        }
+
+        .nav-item.active {
+            color: var(--neon-cyan);
+            background: rgba(0, 242, 254, 0.08);
+        }
+
+        /* =========================================
+           COMMUNITY MODAL & TOAST
         ========================================== */
 
         #popupModal {
@@ -482,749 +557,448 @@
             border: 1px solid var(--border-neon);
             color: var(--text-secondary);
         }
+
+        #toast {
+            position: fixed;
+            bottom: 85px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: rgba(13, 15, 26, 0.95);
+            border: 1px solid var(--neon-cyan);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            font-weight: 600;
+            box-shadow: var(--shadow-neon);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999999;
+            pointer-events: none;
+        }
+
+        #toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 
 <body>
 
     <!-- SPLASH SCREEN -->
-
     <div id="splash-screen">
-
         <div class="splash-avatar">
-
-            <img
-                src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png"
-                alt="Logo"
-            >
-
+            <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" alt="Logo">
         </div>
-
     </div>
 
-
     <!-- DEVICE VERIFICATION -->
-
     <div id="authScreen" style="display: none;">
-
         <div class="card">
-
             <h2>Device Verification</h2>
-
             <p style="color:var(--text-secondary); font-size:13px; margin-bottom:20px;">
                 Please enter your access key obtained from Get Key to unlock the portal (24 Hours Validity).
             </p>
-
-            <input
-                type="text"
-                id="accessKeyInput"
-                class="key-input"
-                placeholder="ENTER KEY"
-            >
-
+            <input type="text" id="accessKeyInput" class="key-input" placeholder="ENTER KEY">
             <button class="btn btn-get" onclick="openAroLinks()">
-
-                <i class="fa-solid fa-key"></i>
-                Get Key
-
+                <i class="fa-solid fa-key"></i> Get Key
             </button>
-
             <button class="btn btn-verify" onclick="verifyUserKey()">
-
-                <i class="fa-solid fa-unlock"></i>
-                Verify & Open Portal
-
+                <i class="fa-solid fa-unlock"></i> Verify & Open Portal
             </button>
-
             <div id="status-msg"></div>
-
         </div>
-
     </div>
 
-
     <!-- COMMUNITY MODAL -->
-
     <div id="popupModal">
-
         <div class="modal-card">
-
-            <div class="modal-close-corner" onclick="closePopup()">
-                ✕
-            </div>
-
-            <img
-                src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png"
-                class="modal-logo"
-                alt="Logo"
-            >
-
+            <div class="modal-close-corner" onclick="closePopup()">✕</div>
+            <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="modal-logo" alt="Logo">
             <p class="modal-text">
                 Get instant access to free batches, test series and study updates.
             </p>
-
             <div class="modal-buttons">
-
-                <a
-                    href="https://t.me/Study_group_App"
-                    target="_blank"
-                    class="btn-social btn-telegram"
-                >
-                    <i class="fa-brands fa-telegram"></i>
-                    Telegram Channel
+                <a href="https://t.me/Study_group_App" target="_blank" class="btn-social btn-telegram">
+                    <i class="fa-brands fa-telegram"></i> Telegram Channel
                 </a>
-
-                <a
-                    href="https://whatsapp.com/channel/0029Vb6FhReEquiLz1jNH00o"
-                    target="_blank"
-                    class="btn-social btn-whatsapp"
-                >
-                    <i class="fa-brands fa-whatsapp"></i>
-                    WhatsApp Channel
+                <a href="https://whatsapp.com/channel/0029Vb6FhReEquiLz1jNH00o" target="_blank" class="btn-social btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp Channel
                 </a>
-
-                <button
-                    class="btn-social btn-close-main"
-                    onclick="closePopup()"
-                >
-                    Continue
-                </button>
-
+                <button class="btn-social btn-close-main" onclick="closePopup()">Continue</button>
             </div>
-
         </div>
-
     </div>
 
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast">Notification</div>
 
     <!-- MAIN APP -->
-
     <div class="app-container">
-
         <div class="brand-header"></div>
 
         <div class="header-search">
-
             <div class="search-box">
-
                 <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="text"
-                    id="searchInput"
-                    placeholder="Search apps..."
-                    onkeyup="filterApps()"
-                >
-
+                <input type="text" id="searchInput" placeholder="Search apps..." onkeyup="filterApps()">
             </div>
-
         </div>
-
 
         <div class="section-title">
-
             <div class="title-with-dot">
-
-                <span class="live-dot"></span>
-
-                <span id="section-label">
-                    All Active App
-                </span>
-
+                <span class="live-dot" id="live-dot-indicator"></span>
+                <span id="section-label">All Active App</span>
             </div>
-
-            <span
-                id="active-count"
-                style="color: var(--neon-cyan);"
-            >
-                2 Available
-            </span>
-
+            <span id="header-count" style="color: var(--neon-cyan);">0 Available</span>
         </div>
 
+        <!-- ACTIVE APPS TAB -->
+        <div class="app-list" id="tab-active"></div>
 
-        <div class="app-list" id="tab-active">
+        <!-- UPCOMING APPS TAB -->
+        <div class="app-list hidden" id="tab-upcoming"></div>
 
+        <!-- FAVORITES TAB -->
+        <div class="app-list hidden" id="tab-favorites"></div>
 
-            <!-- Vidyagram -->
-
-            <div
-                class="app-card"
-                data-name="vidyagram"
-            >
-
-                <div class="app-info">
-
-                    <img
-                        src="https://i.postimg.cc/PqbrQWnH/image-search-1791123215735.png"
-                        class="app-icon"
-                        alt="Vidyagram"
-                    >
-
-                    <div class="app-details">
-
-                        <span class="app-name">
-                            Vidyagram
-                        </span>
-
-                        <span class="app-tag">
-                            Server Active
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="app-actions">
-
-                    <a
-                        href="https://madxrohitbihar-app.github.io/Vidyagram-pro/"
-                        class="open-btn"
-                        target="_blank"
-                    >
-                        Open
-                    </a>
-
-                </div>
-
-            </div>
-
-
-            <!-- Physics Wallah -->
-
-            <div
-                class="app-card"
-                data-name="physics wallah"
-            >
-
-                <div class="app-info">
-
-                    <img
-                        src="https://i.postimg.cc/ZRMVR91P/image-search-1791519463252.webp"
-                        class="app-icon"
-                        alt="Physics Wallah"
-                    >
-
-                    <div class="app-details">
-
-                        <span class="app-name">
-                            Physics Wallah
-                        </span>
-
-                        <span class="app-tag">
-                            Server Active
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="app-actions">
-
-                    <a
-                        href="https://pw-t1.space-z.ai/"
-                        class="open-btn"
-                        target="_blank"
-                    >
-                        Open
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" id="nav-active" onclick="switchTab('active', this)">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Active</span>
+            </button>
+            <button class="nav-item" id="nav-upcoming" onclick="switchTab('upcoming', this)">
+                <i class="fa-solid fa-clock"></i>
+                <span>Upcoming</span>
+            </button>
+            <button class="nav-item" id="nav-favorites" onclick="switchTab('favorites', this)">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favorites</span>
+            </button>
+        </nav>
     </div>
 
-
     <!-- JAVASCRIPT -->
-
     <script>
+        // Data Source Definition
+        const activeApps = [
+            { id: 21, name: "Vidyagram", img: "https://i.postimg.cc/PqbrQWnH/image-search-1791123215735.png", link: "https://madxrohitbihar-app.github.io/Vidyagram-pro/" },
+            { id: 72, name: "Physics Wallah", img: "https://i.postimg.cc/ZRMVR91P/image-search-1791519463252.webp", link: "https://vidcloud.eu.org/#batches" },
+            { id: 2, name: "Khan Global Studies", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuCiwfy76ica73byqKIURXqN2Zi2h2Sdw0VJooGkXsyg&s", link: "https://www.study-mate.in/batches" },
+            { id: 18, name: "Physics Pi", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1plcMrWwVtz1_zK8I6kbPtktbGikeJ55Ukuaad408XQ&s", link: "https://pi.studyspark.study/" }
+        ];
+
+        // Empty Array as requested
+        const upcomingApps = [];
+
+        let favorites = JSON.parse(localStorage.getItem('userFavs')) || [];
+        let currentTab = 'active';
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        function renderApps() {
+            // Render Active Apps
+            const activeContainer = document.getElementById('tab-active');
+            activeContainer.innerHTML = activeApps.map(app => `
+                <div class="app-card" data-name="${app.name.toLowerCase()}">
+                    <div class="app-info">
+                        <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/48/0d1424/fff?text=App'">
+                        <div class="app-details">
+                            <span class="app-name">${app.name}</span>
+                            <span class="app-tag">Server Active</span>
+                        </div>
+                    </div>
+                    <div class="app-actions">
+                        <button class="fav-btn ${favorites.includes(app.id) ? 'active' : ''}" onclick="toggleFavorite(${app.id})">
+                            <i class="fa-${favorites.includes(app.id) ? 'solid' : 'regular'} fa-heart"></i>
+                        </button>
+                        <a href="${app.link}" class="open-btn" target="_blank">Open</a>
+                    </div>
+                </div>
+            `).join('');
+
+            // Render Upcoming Apps
+            const upcomingContainer = document.getElementById('tab-upcoming');
+            if (upcomingApps.length === 0) {
+                upcomingContainer.innerHTML = `<div class="no-data">No upcoming apps at the moment.</div>`;
+            } else {
+                upcomingContainer.innerHTML = upcomingApps.map(app => `
+                    <div class="app-card" data-name="${app.name.toLowerCase()}">
+                        <div class="app-info">
+                            <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/48/0d1424/fff?text=App'">
+                            <div class="app-details">
+                                <span class="app-name">${app.name}</span>
+                                <span class="app-tag" style="color: var(--neon-cyan);">Coming Soon</span>
+                            </div>
+                        </div>
+                        <div class="app-actions">
+                            <button class="fav-btn ${favorites.includes(app.id) ? 'active' : ''}" onclick="toggleFavorite(${app.id})">
+                                <i class="fa-${favorites.includes(app.id) ? 'solid' : 'regular'} fa-heart"></i>
+                            </button>
+                            <a href="${app.link}" class="open-btn" target="_blank">Open</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Render Favorites Tab
+            const favContainer = document.getElementById('tab-favorites');
+            const allApps = activeApps.concat(upcomingApps);
+            const favApps = allApps.filter(app => favorites.includes(app.id));
+
+            if (favApps.length === 0) {
+                favContainer.innerHTML = `<div class="no-data">No favorite apps saved yet.</div>`;
+            } else {
+                favContainer.innerHTML = favApps.map(app => `
+                    <div class="app-card" data-name="${app.name.toLowerCase()}">
+                        <div class="app-info">
+                            <img src="${app.img}" class="app-icon" alt="${app.name}" onerror="this.src='https://via.placeholder.com/48/0d1424/fff?text=App'">
+                            <div class="app-details">
+                                <span class="app-name">${app.name}</span>
+                                <span class="app-tag" style="color: var(--neon-pink);">Saved Item</span>
+                            </div>
+                        </div>
+                        <div class="app-actions">
+                            <button class="fav-btn active" onclick="toggleFavorite(${app.id})">
+                                <i class="fa-solid fa-heart"></i>
+                            </button>
+                            <a href="${app.link}" class="open-btn" target="_blank">Open</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            updateCounts();
+            filterApps();
+        }
+
+        function updateCounts() {
+            const countEl = document.getElementById('header-count');
+            if (currentTab === 'active') {
+                countEl.innerText = `${activeApps.length} Available`;
+            } else if (currentTab === 'upcoming') {
+                countEl.innerText = `${upcomingApps.length} Coming Soon`;
+            } else {
+                const allApps = activeApps.concat(upcomingApps);
+                const favCount = allApps.filter(app => favorites.includes(app.id)).length;
+                countEl.innerText = `${favCount} Saved`;
+            }
+        }
+
+        function toggleFavorite(id) {
+            if (favorites.includes(id)) {
+                favorites = favorites.filter(favId => favId !== id);
+                showToast("Removed from Favorites");
+            } else {
+                favorites.push(id);
+                showToast("Added to Favorites");
+            }
+            localStorage.setItem('userFavs', JSON.stringify(favorites));
+            renderApps();
+        }
+
+        function switchTab(tabName, element) {
+            currentTab = tabName;
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => item.classList.remove('active'));
+            if (element) element.classList.add('active');
+
+            ['active', 'upcoming', 'favorites'].forEach(tab => {
+                document.getElementById(`tab-${tab}`).classList.add('hidden');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+            const sectionLabel = document.getElementById('section-label');
+            const liveDot = document.getElementById('live-dot-indicator');
+
+            if (tabName === 'active') {
+                sectionLabel.innerText = "All Active App";
+                liveDot.style.display = "inline-block";
+            } else if (tabName === 'upcoming') {
+                sectionLabel.innerText = "Upcoming Apps";
+                liveDot.style.display = "none";
+            } else {
+                sectionLabel.innerText = "Favorite Apps";
+                liveDot.style.display = "none";
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('searchInput').value = '';
+            renderApps();
+        }
+
+        function filterApps() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const currentTabEl = document.getElementById(`tab-${currentTab}`);
+            currentTabEl.querySelectorAll('.app-card').forEach(card => {
+                const name = card.getAttribute('data-name');
+                card.style.display = (!name || name.includes(query)) ? 'flex' : 'none';
+            });
+        }
 
         /* =========================================
            AUTHENTICATION CHECK
         ========================================== */
 
         function checkAuthStatus() {
-
-            const expiryTime =
-                localStorage.getItem("app_expiry_time");
-
-            const authScreen =
-                document.getElementById("authScreen");
-
-            if (!authScreen) {
-                return;
-            }
-
+            const expiryTime = localStorage.getItem("app_expiry_time");
+            const authScreen = document.getElementById("authScreen");
+            if (!authScreen) return;
             const now = Date.now();
-
-            if (
-                expiryTime &&
-                now < parseInt(expiryTime, 10)
-            ) {
-
+            if (expiryTime && now < parseInt(expiryTime, 10)) {
                 authScreen.style.display = "none";
-
-            }
-
-            else {
-
+            } else {
                 authScreen.style.display = "flex";
-
             }
-
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            checkAuthStatus();
+            renderApps();
+        });
 
-        /* INITIAL CHECK */
+        window.addEventListener("pageshow", function () {
+            checkAuthStatus();
+        });
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            function () {
-
+        document.addEventListener("visibilitychange", function () {
+            if (!document.hidden) {
                 checkAuthStatus();
-
             }
-        );
-
-
-        /* BACK BUTTON / BFCache FIX */
-
-        window.addEventListener(
-            "pageshow",
-            function () {
-
-                checkAuthStatus();
-
-            }
-        );
-
-
-        /* PAGE BECOMES ACTIVE AGAIN */
-
-        document.addEventListener(
-            "visibilitychange",
-            function () {
-
-                if (!document.hidden) {
-
-                    checkAuthStatus();
-
-                }
-
-            }
-        );
-
+        });
 
         /* =========================================
-           GENERATE SECRET KEY
+           GENERATE SECRET KEY & AROLINKS
         ========================================== */
 
         function generateSecretKey() {
-
-            const chars =
-                "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
+            const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
             let middlePart = "";
-
             for (let i = 0; i < 14; i++) {
-
-                middlePart += chars.charAt(
-                    Math.floor(
-                        Math.random() * chars.length
-                    )
-                );
-
+                middlePart += chars.charAt(Math.floor(Math.random() * chars.length));
             }
-
             return "MAD" + middlePart + "APP";
-
         }
-
-
-        /* =========================================
-           AROLINKS
-        ========================================== */
 
         function openAroLinks() {
+            const apiToken = "828c34db80ec53e94e7174f5f52e0b274a38ab2d";
+            const freshKey = generateSecretKey();
+            localStorage.setItem("expected_app_key", freshKey);
 
-            const apiToken =
-                "828c34db80ec53e94e7174f5f52e0b274a38ab2d";
+            const targetUrl = "https://madxrohitbihar-app.github.io/VIDYAGRAM-KYE/?key=" + encodeURIComponent(freshKey);
+            const apiUrl = `https://arolinks.com/api?api=${apiToken}&url=${encodeURIComponent(targetUrl)}`;
 
-            const freshKey =
-                generateSecretKey();
-
-            localStorage.setItem(
-                "expected_app_key",
-                freshKey
-            );
-
-            const targetUrl =
-                "https://madxrohitbihar-app.github.io/VIDYAGRAM-KYE/?key=" +
-                encodeURIComponent(freshKey);
-
-            const apiUrl =
-                `https://arolinks.com/api?api=${apiToken}&url=${encodeURIComponent(targetUrl)}`;
-
-            const msgDiv =
-                document.getElementById("status-msg");
-
-            msgDiv.style.color =
-                "#00f2fe";
-
-            msgDiv.innerText =
-                "Generating Token...";
+            const msgDiv = document.getElementById("status-msg");
+            msgDiv.style.color = "#00f2fe";
+            msgDiv.innerText = "Generating Token...";
 
             fetch(apiUrl)
-
-                .then(function (response) {
-
-                    return response.json();
-
-                })
-
+                .then(function (response) { return response.json(); })
                 .then(function (data) {
-
-                    if (
-                        data.status === "success" &&
-                        data.shortenedUrl
-                    ) {
-
-                        window.location.href =
-                            data.shortenedUrl;
-
+                    if (data.status === "success" && data.shortenedUrl) {
+                        window.location.href = data.shortenedUrl;
+                    } else {
+                        msgDiv.style.color = "#ff4d4d";
+                        msgDiv.innerText = "Error generating link!";
                     }
-
-                    else {
-
-                        msgDiv.style.color =
-                            "#ff4d4d";
-
-                        msgDiv.innerText =
-                            "Error generating link!";
-
-                    }
-
                 })
-
                 .catch(function () {
-
-                    msgDiv.style.color =
-                        "#ff4d4d";
-
-                    msgDiv.innerText =
-                        "Network Error!";
-
+                    msgDiv.style.color = "#ff4d4d";
+                    msgDiv.innerText = "Network Error!";
                 });
-
         }
-
-
-        /* =========================================
-           VERIFY USER KEY
-        ========================================== */
 
         function verifyUserKey() {
-
-            const userKey =
-                document
-                    .getElementById("accessKeyInput")
-                    .value
-                    .trim()
-                    .toUpperCase();
-
-            const expectedKey =
-                localStorage.getItem(
-                    "expected_app_key"
-                );
-
-            const usedKeys =
-                JSON.parse(
-                    localStorage.getItem(
-                        "used_app_keys"
-                    ) || "[]"
-                );
-
-            const msgDiv =
-                document.getElementById(
-                    "status-msg"
-                );
-
+            const userKey = document.getElementById("accessKeyInput").value.trim().toUpperCase();
+            const expectedKey = localStorage.getItem("expected_app_key");
+            const usedKeys = JSON.parse(localStorage.getItem("used_app_keys") || "[]");
+            const msgDiv = document.getElementById("status-msg");
 
             if (!userKey) {
-
-                msgDiv.style.color =
-                    "#ff4d4d";
-
-                msgDiv.innerText =
-                    "Please enter access key!";
-
+                msgDiv.style.color = "#ff4d4d";
+                msgDiv.innerText = "Please enter access key!";
                 return;
-
             }
 
-
-            const patternValid =
-                userKey.startsWith("MAD") &&
-                userKey.endsWith("APP") &&
-                userKey.length === 20;
-
+            const patternValid = userKey.startsWith("MAD") && userKey.endsWith("APP") && userKey.length === 20;
 
             if (!patternValid) {
-
-                msgDiv.style.color =
-                    "#ff4d4d";
-
-                msgDiv.innerText =
-                    "Invalid token format!";
-
+                msgDiv.style.color = "#ff4d4d";
+                msgDiv.innerText = "Invalid token format!";
                 return;
-
             }
-
 
             if (usedKeys.includes(userKey)) {
-
-                msgDiv.style.color =
-                    "#ff4d4d";
-
-                msgDiv.innerText =
-                    "This token has already been used! Please generate a new key.";
-
+                msgDiv.style.color = "#ff4d4d";
+                msgDiv.innerText = "This token has already been used! Please generate a new key.";
                 return;
-
             }
 
-
-            if (
-                (expectedKey &&
-                 userKey === expectedKey) ||
-                patternValid
-            ) {
-
+            if ((expectedKey && userKey === expectedKey) || patternValid) {
                 usedKeys.push(userKey);
+                localStorage.setItem("used_app_keys", JSON.stringify(usedKeys));
 
-                localStorage.setItem(
-                    "used_app_keys",
-                    JSON.stringify(usedKeys)
-                );
+                const twentyFourHours = 24 * 60 * 60 * 1000;
+                const expiryTimestamp = Date.now() + twentyFourHours;
+                localStorage.setItem("app_expiry_time", expiryTimestamp);
 
+                document.getElementById("authScreen").style.display = "none";
 
-                const twentyFourHours =
-                    24 * 60 * 60 * 1000;
-
-                const expiryTimestamp =
-                    Date.now() +
-                    twentyFourHours;
-
-                localStorage.setItem(
-                    "app_expiry_time",
-                    expiryTimestamp
-                );
-
-
-                const authScreen =
-                    document.getElementById(
-                        "authScreen"
-                    );
-
-                authScreen.style.display =
-                    "none";
-
-
-                if (
-                    window.history &&
-                    window.history.replaceState
-                ) {
-
-                    const cleanUrl =
-                        window.location.origin +
-                        window.location.pathname;
-
-                    window.history.replaceState(
-                        {
-                            path: cleanUrl
-                        },
-                        "",
-                        cleanUrl
-                    );
-
+                if (window.history && window.history.replaceState) {
+                    const cleanUrl = window.location.origin + window.location.pathname;
+                    window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
                 }
-
+            } else {
+                msgDiv.style.color = "#ff4d4d";
+                msgDiv.innerText = "Invalid Access Token!";
             }
-
-            else {
-
-                msgDiv.style.color =
-                    "#ff4d4d";
-
-                msgDiv.innerText =
-                    "Invalid Access Token!";
-
-            }
-
         }
-
-
-        /* =========================================
-           SEARCH
-        ========================================== */
-
-        function filterApps() {
-
-            const query =
-                document
-                    .getElementById("searchInput")
-                    .value
-                    .toLowerCase();
-
-            document
-                .querySelectorAll(
-                    "#tab-active .app-card"
-                )
-                .forEach(function (card) {
-
-                    const name =
-                        card.getAttribute(
-                            "data-name"
-                        );
-
-                    card.style.display =
-                        (
-                            !name ||
-                            name.includes(query)
-                        )
-                            ? "flex"
-                            : "none";
-
-                });
-
-        }
-
 
         /* =========================================
            SPLASH + POPUP + URL KEY
         ========================================== */
 
-    	document.addEventListener(
-            "DOMContentLoaded",
-            function () {
+        document.addEventListener("DOMContentLoaded", function () {
+            const splash = document.getElementById("splash-screen");
 
-                const splash =
-                    document.getElementById(
-                        "splash-screen"
-                    );
-
-
-                /* SPLASH */
-
-                if (
-                    !sessionStorage.getItem(
-                        "splashShown"
-                    )
-                ) {
-
-                    setTimeout(
-                        function () {
-
-                            splash.classList.add(
-                                "hide-splash"
-                            );
-
-                            sessionStorage.setItem(
-                                "splashShown",
-                                "true"
-                            );
-
-                        },
-                        1200
-                    );
-
-                }
-
-                else {
-
-                    splash.style.display =
-                        "none";
-
-                }
-
-
-                /* URL KEY */
-
-                const urlParams =
-                    new URLSearchParams(
-                        window.location.search
-                    );
-
-                const urlKey =
-                    urlParams.get("key");
-
-                if (urlKey) {
-
-                    document.getElementById(
-                        "accessKeyInput"
-                    ).value = urlKey;
-
-                    localStorage.setItem(
-                        "expected_app_key",
-                        urlKey
-                    );
-
-                }
-
-
-                /* COMMUNITY POPUP */
-
-                if (
-                    !sessionStorage.getItem(
-                        "popupShown"
-                    )
-                ) {
-
-                    setTimeout(
-                        function () {
-
-                            document.getElementById(
-                                "popupModal"
-                            ).style.display =
-                                "flex";
-
-                        },
-                        2000
-                    );
-
-                }
-
-
-                /* FINAL AUTH CHECK */
-
-                checkAuthStatus();
-
+            if (!sessionStorage.getItem("splashShown")) {
+                setTimeout(function () {
+                    splash.classList.add("hide-splash");
+                    sessionStorage.setItem("splashShown", "true");
+                }, 1200);
+            } else {
+                splash.style.display = "none";
             }
-        );
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlKey = urlParams.get("key");
 
-        /* =========================================
-           CLOSE POPUP
-        ========================================== */
+            if (urlKey) {
+                document.getElementById("accessKeyInput").value = urlKey;
+                localStorage.setItem("expected_app_key", urlKey);
+            }
+
+            if (!sessionStorage.getItem("popupShown")) {
+                setTimeout(function () {
+                    document.getElementById("popupModal").style.display = "flex";
+                }, 2000);
+            }
+
+            checkAuthStatus();
+        });
 
         function closePopup() {
-
-            document.getElementById(
-                "popupModal"
-            ).style.display =
-                "none";
-
-            sessionStorage.setItem(
-                "popupShown",
-                "true"
-            );
-
+            document.getElementById("popupModal").style.display = "none";
+            sessionStorage.setItem("popupShown", "true");
         }
-
     </script>
 
 </body>
