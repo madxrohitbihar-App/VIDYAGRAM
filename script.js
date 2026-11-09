@@ -165,125 +165,7 @@ function filterApps() {
 }
 
 /* =========================================
-   AUTHENTICATION CHECK
-========================================== */
-
-function checkAuthStatus() {
-    const expiryTime = localStorage.getItem("app_expiry_time");
-    const authScreen = document.getElementById("authScreen");
-    if (!authScreen) return;
-    const now = Date.now();
-    if (expiryTime && now < parseInt(expiryTime, 10)) {
-        authScreen.style.display = "none";
-    } else {
-        authScreen.style.display = "flex";
-    }
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-    checkAuthStatus();
-    renderApps();
-});
-
-window.addEventListener("pageshow", function () {
-    checkAuthStatus();
-});
-
-document.addEventListener("visibilitychange", function () {
-    if (!document.hidden) {
-        checkAuthStatus();
-    }
-});
-
-/* =========================================
-   GENERATE SECRET KEY & AROLINKS
-========================================== */
-
-function generateSecretKey() {
-    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    let middlePart = "";
-    for (let i = 0; i < 14; i++) {
-        middlePart += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return "MAD" + middlePart + "APP";
-}
-
-function openAroLinks() {
-    const apiToken = "0aa19e644db340e405f3b7654cdc70f70d705966";
-    const freshKey = generateSecretKey();
-    localStorage.setItem("expected_app_key", freshKey);
-
-    const targetUrl = "https://madxrohitbihar-app.github.io/VIDYAGRAM-KYE/?key=" + encodeURIComponent(freshKey);
-    const apiUrl = `https://arolinks.com/api?api=${apiToken}&url=${encodeURIComponent(targetUrl)}`;
-
-    const msgDiv = document.getElementById("status-msg");
-    msgDiv.style.color = "#00f2fe";
-    msgDiv.innerText = "Generating Token...";
-
-    fetch(apiUrl)
-        .then(function (response) { return response.json(); })
-        .then(function (data) {
-            if (data.status === "success" && data.shortenedUrl) {
-                window.location.href = data.shortenedUrl;
-            } else {
-                msgDiv.style.color = "#ff4d4d";
-                msgDiv.innerText = "Error generating link!";
-            }
-        })
-        .catch(function () {
-            msgDiv.style.color = "#ff4d4d";
-            msgDiv.innerText = "Network Error!";
-        });
-}
-
-function verifyUserKey() {
-    const userKey = document.getElementById("accessKeyInput").value.trim().toUpperCase();
-    const expectedKey = localStorage.getItem("expected_app_key");
-    const usedKeys = JSON.parse(localStorage.getItem("used_app_keys") || "[]");
-    const msgDiv = document.getElementById("status-msg");
-
-    if (!userKey) {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = "Please enter access key!";
-        return;
-    }
-
-    const patternValid = userKey.startsWith("MAD") && userKey.endsWith("APP") && userKey.length === 20;
-
-    if (!patternValid) {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = "Invalid token format!";
-        return;
-    }
-
-    if (usedKeys.includes(userKey)) {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = "This token has already been used! Please generate a new key.";
-        return;
-    }
-
-    if ((expectedKey && userKey === expectedKey) || patternValid) {
-        usedKeys.push(userKey);
-        localStorage.setItem("used_app_keys", JSON.stringify(usedKeys));
-
-        const twentyFourHours = 24 * 60 * 60 * 1000;
-        const expiryTimestamp = Date.now() + twentyFourHours;
-        localStorage.setItem("app_expiry_time", expiryTimestamp);
-
-        document.getElementById("authScreen").style.display = "none";
-
-        if (window.history && window.history.replaceState) {
-            const cleanUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({ path: cleanUrl }, "", cleanUrl);
-        }
-    } else {
-        msgDiv.style.color = "#ff4d4d";
-        msgDiv.innerText = "Invalid Access Token!";
-    }
-}
-
-/* =========================================
-   SPLASH + POPUP + URL KEY
+   SPLASH + POPUP INITIALIZATION
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -298,21 +180,13 @@ document.addEventListener("DOMContentLoaded", function () {
         splash.style.display = "none";
     }
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlKey = urlParams.get("key");
-
-    if (urlKey) {
-        document.getElementById("accessKeyInput").value = urlKey;
-        localStorage.setItem("expected_app_key", urlKey);
-    }
-
     if (!sessionStorage.getItem("popupShown")) {
         setTimeout(function () {
             document.getElementById("popupModal").style.display = "flex";
         }, 2000);
     }
 
-    checkAuthStatus();
+    renderApps();
 });
 
 function closePopup() {
