@@ -7,7 +7,7 @@ const activeApps = [
     { id: 74, name: "Sachin Academy", img: "https://i.postimg.cc/MphZTcLR/image-search-1783742533521.jpg", link: "https://studybeepro.site/sachinacademy/" },
     { id: 75, name: "Science and Fun", img: "https://i.postimg.cc/gksdc0cV/image-search-1791027234501.jpg", link: "https://studybeepro.site/sf/" },
     { id: 21, name: "Vidyagram", img: "https://i.postimg.cc/PqbrQWnH/image-search-1791123215735.png", link: "https://studybeepro.site/vidyagram/" },
-    { id: 78, name: "Vidyagram 2", img: "https://i.postimg.cc/PqbrQWnH/image-search-1791123215735.png", link: "https://madxrohitbihar-app.github.io/Vidyagram-pro/" },
+    { id: 78, name: "Vidyagram 2", img: "https://i.postimg.cc/PqbrQWnH/image-search-1791123215735.png", link: "https://ais-pre-a5hvjqc66aerxlyco5jzkx-49225910278.asia-east1.run.app/" },
     { id: 77, name: "Yes Officer", img: "https://i.postimg.cc/RCLCNqRm/image-search-1793245189282.jpg", link: "https://studybeepro.site/yesoff/index.html" },
     { id: 79, name: "Yes Officer 2", img: "https://i.postimg.cc/RCLCNqRm/image-search-1793245189282.jpg", link: "https://yes.learnvortex.cc.cd/" }
 ];
