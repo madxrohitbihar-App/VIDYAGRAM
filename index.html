@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+    <title>MODEDUZONE | Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="neon-gold" oncontextmenu="return false;">
+
+    <!-- DEVICE VERIFICATION SCREEN -->
+    <div id="authScreenWrapper" style="display: none;">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" alt="Logo">
+            </div>
+            
+            <h2 class="auth-title">DEVICE VERIFICATION</h2>
+            <p class="auth-desc">Enter your access key from Get Key to unlock portal (24 Hours Validity).</p>
+            
+            <input type="text" id="accessKeyInput" class="key-input" maxlength="20" placeholder="ENTER ACCESS KEY">
+            
+            <button class="auth-btn btn-get" onclick="openAroLinks()">
+                <i class="fa-solid fa-key" style="color: #ffd700;"></i> Get Key
+            </button>
+            <button class="auth-btn btn-verify" onclick="verifyUserKey()">
+                <i class="fa-solid fa-lock-open"></i> Verify & Open App
+            </button>
+            
+            <button class="auth-btn btn-youtube-tutorial" onclick="window.open('https://youtu.be/qN80pm0tJjk', '_blank')">
+                <i class="fa-brands fa-youtube"></i> Watch Tutorial On YouTube
+            </button>
+
+            <div class="auth-telegram-text">
+                Need a key? Join our <a href="https://t.me/Study_group_App" target="_blank">Telegram</a>
+            </div>
+
+            <div id="status-msg"></div>
+        </div>
+    </div>
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <div class="splash-avatar">
+                <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" alt="Logo">
+            </div>
+            <div class="splash-brand-title">MODEDUZONE</div>
+            <div class="splash-dev-name">Developer By MedxrohitBihar</div>
+        </div>
+    </div>
+
+    <!-- COMMUNITY MODAL -->
+    <div id="popupModal" style="display: none;">
+        <div class="modal-card">
+            <div class="modal-close-corner" onclick="closePopup()">✕</div>
+            <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="modal-logo" alt="Logo">
+            <p class="modal-text">
+                Get instant access to free batches, test series and study updates.
+            </p>
+            <div class="modal-buttons">
+                <a href="https://t.me/Study_group_App" target="_blank" class="btn-social btn-telegram">
+                    <i class="fa-brands fa-telegram"></i> Telegram Channel
+                </a>
+                <a href="https://whatsapp.com/channel/0029Vb6FhReEquiLz1jNH00o" target="_blank" class="btn-social btn-whatsapp">
+                    <i class="fa-brands fa-whatsapp"></i> WhatsApp Channel
+                </a>
+                <button class="btn-social btn-close-main" onclick="closePopup()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVER SELECTION MODAL -->
+    <div id="serverModal">
+        <div class="modal-card">
+            <div class="modal-close-corner" onclick="closeServerModal()">✕</div>
+            <img id="serverModalLogo" src="" class="modal-logo" alt="Logo">
+            <h3 id="serverModalTitle" style="color:var(--neon-cyan); font-size:15px; margin-bottom:8px;">Select Server</h3>
+            <p class="modal-text">Please choose a server to open this app:</p>
+            <div class="modal-buttons" id="serverButtonsList"></div>
+        </div>
+    </div>
+
+    <!-- THEME SELECTION MODAL -->
+    <div id="themeModal">
+        <div class="modal-card" style="max-width: 320px;">
+            <div class="modal-close-corner" onclick="closeThemeModal()">✕</div>
+            <h3 style="color:var(--neon-cyan); font-size:15px; margin-bottom:4px;"><i class="fa-solid fa-palette"></i> Select Theme</h3>
+            <p class="modal-text">Choose your preferred portal style:</p>
+            <div class="modal-buttons">
+                <button class="theme-option-btn" onclick="setTheme('white')">
+                    <span class="theme-circle" style="background: #ffffff;"></span>
+                    <div>
+                        <div style="font-weight:700; font-size:12px;">White Theme</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">Clean & Bright Light Mode</div>
+                    </div>
+                </button>
+                <button class="theme-option-btn" onclick="setTheme('black')">
+                    <span class="theme-circle" style="background: #000000;"></span>
+                    <div>
+                        <div style="font-weight:700; font-size:12px;">Black Theme</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">Pure AMOLED Dark Night</div>
+                    </div>
+                </button>
+                <button class="theme-option-btn" onclick="setTheme('neon-gold')">
+                    <span class="theme-circle" style="background: #ffd700;"></span>
+                    <div>
+                        <div style="font-weight:700; font-size:12px;">Neon Gold Theme</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">Default Glassmorphism Theme</div>
+                    </div>
+                </button>
+                <button class="theme-option-btn" onclick="setTheme('neon-cyberpunk')">
+                    <span class="theme-circle" style="background: #ff007f;"></span>
+                    <div>
+                        <div style="font-weight:700; font-size:12px;">Neon Cyberpunk</div>
+                        <div style="font-size:10px; color:var(--text-secondary);">Ultra Modern Cyan/Pink Glow</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION (TOP) -->
+    <div id="toast">Notification</div>
+
+    <!-- MAIN APP -->
+    <div class="app-container">
+        <!-- HEADER -->
+        <div class="brand-header">
+            <div class="header-profile">
+                <img src="https://i.postimg.cc/xdvmqvSS/image-search-1788852293975.png" class="header-logo" alt="Logo">
+                <div class="header-titles">
+                    <h2>MODEDUZONE</h2>
+                    <p>EDUCATION MUST BE FREE FOR EVERYONE</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELEGRAM BANNER -->
+        <div class="telegram-banner-box">
+            <a href="https://t.me/Study_group_App" target="_blank" class="telegram-banner">
+                <div class="tg-left">
+                    <i class="fa-brands fa-telegram tg-icon"></i>
+                    <div class="tg-text">
+                        <h4>Join Our Telegram</h4>
+                        <p><span class="tg-sub-dot"></span> 73,911 JOINED</p>
+                    </div>
+                </div>
+                <i class="fa-solid fa-arrow-right tg-arrow"></i>
+            </a>
+        </div>
+
+        <div class="header-search">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search platforms or exams..." onkeyup="filterApps()">
+            </div>
+        </div>
+
+        <div class="section-title">
+            <div class="title-with-dot">
+                <span class="live-dot" id="live-dot-indicator"></span>
+                <span id="section-label">All Active App</span>
+            </div>
+            <span id="header-count" style="color: var(--neon-cyan);">0 Available</span>
+        </div>
+
+        <!-- ACTIVE APPS TAB -->
+        <div class="app-list" id="tab-active"></div>
+
+        <!-- FAVORITES TAB -->
+        <div class="app-list hidden" id="tab-favorites"></div>
+
+        <!-- BOTTOM NAVIGATION -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" id="nav-active" onclick="switchTab('active', this)">
+                <i class="fa-solid fa-layer-group"></i>
+                <span>Active</span>
+            </button>
+            <button class="nav-item" id="nav-favorites" onclick="switchTab('favorites', this)">
+                <i class="fa-solid fa-heart"></i>
+                <span>Favorites</span>
+            </button>
+            <button class="nav-item" onclick="openThemeModal()">
+                <i class="fa-solid fa-palette"></i>
+                <span>Theme</span>
+            </button>
+        </nav>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
